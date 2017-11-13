@@ -105,4 +105,4 @@ data/
 data.tar.gz
 
 # Generated models
-models/
+models/*.h5
