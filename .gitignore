@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# downloaded dataset
+data/
+data.tar.gz
+
+# Generated models
+models/
