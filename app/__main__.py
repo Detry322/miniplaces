@@ -7,11 +7,13 @@ np.random.seed(234421)
 
 from app.download import download_data
 from app.train import train_model
+from app.models import show_info
 
 def get_args():
     parser = argparse.ArgumentParser(description='Miniplaces project to classify images')
     parser.add_argument('--download', help='Download dataset', action='store_true')
     parser.add_argument('--train', help='Train tiles', action='store_true')
+    parser.add_argument('--info', help='Print information about a model', action='store_true')
     parser.add_argument('--force', help='Force an action', action='store_true')
     parser.add_argument('--model_type', help='The model to train with', type=str, default='basic_model')
     parser.add_argument('--model_file', help='The h5 model file to input/output.', type=str)
@@ -28,6 +30,9 @@ def main():
         download_data(force=args.force)
     elif args.train:
         train_model(args)
+    elif args.info:
+        show_info(args)
+
 
 if __name__ == '__main__':
     main()

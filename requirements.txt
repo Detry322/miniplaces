@@ -1,7 +1,7 @@
 clint==0.5.1
 h5py==2.7.1
 Keras==2.0.9
-imageio=2.2.0
+imageio==2.2.0
 numpy==1.13.3
 requests==2.18.4
 tensorflow==1.4.0
