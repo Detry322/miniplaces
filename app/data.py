@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import scipy.misc
+import imageio
 import h5py
 import logging
 
@@ -100,7 +101,7 @@ class DataLoaderDisk(object):
         images_batch = np.zeros((batch_size, self.fine_size, self.fine_size, 3))
         labels_batch = np.zeros((batch_size, self.num_categories))
         for i in range(batch_size):
-            image = scipy.misc.imread(self.list_im[self._idx])
+            image = imageio.imread(self.list_im[self._idx])
             image = scipy.misc.imresize(image, (self.load_size, self.load_size))
             image = image.astype(np.float32)/255.
             image = image - self.data_mean
