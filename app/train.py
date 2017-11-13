@@ -12,6 +12,7 @@ DATA_TRAIN_CONFIG = {
   'data_list': 'data/train.txt',
   'load_size': 256,
   'fine_size': 224,
+  'num_categories': 100,
   'data_mean': np.asarray([0.45834960097,0.44674252445,0.41352266842]),
   'randomize': True
 }
@@ -21,6 +22,7 @@ DATA_VAL_CONFIG = {
   'data_list': 'data/val.txt',
   'load_size': 256,
   'fine_size': 224,
+  'num_categories': 100,
   'data_mean': np.asarray([0.45834960097,0.44674252445,0.41352266842]),
   'randomize': False
 }
