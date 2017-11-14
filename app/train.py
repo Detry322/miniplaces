@@ -66,3 +66,4 @@ def train_model(args):
         validation_data=create_generator(val_loader, args.batch_size),
         validation_steps=validation_steps
     )
+    model.save(model_file)
