@@ -56,7 +56,7 @@ def train_model(args):
         model_module.compile_model(model)
 
     logging.info("Training {} model...".format(model_type))
-    checkpoint = ModelCheckpoint(model_file, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+    checkpoint = ModelCheckpoint(model_file)
     callbacks_list = [checkpoint]
     model.fit_generator(
         generator=create_generator(train_loader, args.batch_size),
