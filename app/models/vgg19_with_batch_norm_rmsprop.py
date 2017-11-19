@@ -4,7 +4,7 @@ from keras.layers.convolutional import (Convolution2D, MaxPooling2D,
 from keras.layers.core import Activation, Dense, Dropout, Flatten
 from keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dense, BatchNormalization, Activation
 from keras.models import Sequential, Model 
-from keras.optimizers import SGD
+from keras.optimizers import SGD, Adam, RMSprop
 from keras.models import load_model as keras_load_model
 # from kerasmodelzoo.utils.data import download_file, load_np_data
 
@@ -77,28 +77,20 @@ def create_model(weights=False, summary=True):
 
     # Classification layer
     x = Flatten(name='flatten')(x)
-    x = Dense(512, activation='relu', name='dense_1')(x)
+    x = Dense(4096, activation='relu', name='dense_1')(x)
     x = Dropout(0.5)(x)
-    x = Dense(512, activation='relu', name='dense_2')(x)
+    x = Dense(4096, activation='relu', name='dense_2')(x)
     x = Dropout(0.5)(x)
     x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
     # x = Activation("softmax")(x)
     return Model(inputs=input_, outputs=x)
 
-    if weights:
-        filepath = download_file('vgg19_weights.h5',
-            _VGG_19_WEIGHTS_URL)
-        vgg19_model.load_weights(filepath)
-
     if summary:
         print(vgg19_model.summary())
 
-    # return vgg19_model
-    # mean = load_np_data('vgg_mean.npy')
-
 def compile_model(model):
-    sgd = SGD(lr=0.0001, decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='categorical_crossentropy', \
+    rmsprop = RMSprop(lr=0.0001, rho=0.9, epsilon=1e-08, decay=0.0)
+    model.compile(optimizer=rmsprop, loss='categorical_crossentropy', \
                   metrics=['categorical_accuracy', 'top_k_categorical_accuracy'])
 
 def load_model(model_filename):
