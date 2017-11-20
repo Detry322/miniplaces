@@ -4,6 +4,7 @@ import scipy.misc
 import imageio
 import h5py
 import logging
+import glob
 
 # loading data from .h5
 class DataLoaderH5(object):
@@ -126,6 +127,52 @@ class DataLoaderDisk(object):
 
     def size(self):
         return self.num
+
+    def reset(self):
+        self._idx = 0
+
+
+class TestDataLoader(object):
+    def __init__(self, **kwargs):
+        self.load_size = int(kwargs['load_size'])
+        self.fine_size = int(kwargs['fine_size'])
+        self.data_mean = np.array(kwargs['data_mean'])
+
+        # read data info from lists
+        self.data_folder = kwargs['data_folder']
+        self.path = os.path.join(kwargs['data_root'], kwargs['data_folder'])
+        self.images = glob.glob(os.path.join(self.path, '*.jpg'))
+        logging.info('# Images found: {}'.format(self.size()))
+
+        self.copy_count = kwargs['copy_count']
+        self._idx = 0
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self._idx == self.size():
+            raise StopIteration()
+
+        images_batch = np.zeros((self.copy_count, self.fine_size, self.fine_size, 3))
+        for i in range(self.copy_count):
+            image = imageio.imread(self.images[self._idx])
+            image = scipy.misc.imresize(image, (self.load_size, self.load_size))
+            image = image.astype(np.float32)/255.
+            image = image - self.data_mean
+            flip = np.random.random_integers(0, 1)
+            if flip>0:
+                image = image[:,::-1,:]
+            offset_h = np.random.random_integers(0, self.load_size-self.fine_size)
+            offset_w = np.random.random_integers(0, self.load_size-self.fine_size)
+            images_batch[i, ...] =  image[offset_h:offset_h+self.fine_size, offset_w:offset_w+self.fine_size, :]
+
+        image_name = self.images[self.__idx].replace(self.path, self.data_folder)
+        self._idx += 1
+        return image_name, images_batch
+
+    def size(self):
+        return len(self.images)
 
     def reset(self):
         self._idx = 0

@@ -106,3 +106,5 @@ data.tar.gz
 
 # Generated models
 models*
+
+results/*.txt
