@@ -47,12 +47,13 @@ def evaluate_model(args):
     val_loader = DataLoaderDisk(**DATA_VAL_CONFIG)
     test_loader = TestDataLoader(**DATA_TEST_CONFIG)
 
+    logging.info("Evaluating on val set...")
     val_results = model.evaluate_generator(
         generator=create_generator(val_loader, args.batch_size),
         steps = (val_loader.num / args.batch_size),
     )
 
-    logging.info("Validation results -- {}".format(', '.join('{}: {}'.format(name, result) for name, result in zip(model.metric_names, val_results))))
+    logging.info("Validation results -- {}".format(', '.join('{}: {}'.format(name, result) for name, result in zip(model.metrics_names, val_results))))
     logging.info("Running on test set with {} redundancy...".format(test_loader.copy_count))
 
     results = []
