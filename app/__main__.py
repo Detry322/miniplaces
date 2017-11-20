@@ -20,8 +20,9 @@ def get_args():
     parser.add_argument('--force', help='Force an action', action='store_true')
     parser.add_argument('--model_type', help='The model to train with', type=str, default='basic_model')
     parser.add_argument('--model_file', help='The h5 model file to input/output.', type=str)
+    parser.add_argument('--batch_size', help='The batch size to train on.', type=int, default=25)
     parser.add_argument('--batch_size', help='The batch size to train on.', type=int, default=100)
-    parser.add_argument('--epochs', help='The batch size to train on.', type=int, default=500)
+    parser.add_argument('--epochs', help='The batch size to train on.', type=int, default=40)
     args = parser.parse_args()
     if not args.model_file:
         args.model_file = 'models/{}.h5'.format(args.model_type)

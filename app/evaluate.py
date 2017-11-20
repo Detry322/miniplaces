@@ -56,22 +56,26 @@ def evaluate_model(args):
     logging.info("Validation results -- {}".format(', '.join('{}: {}'.format(name, result) for name, result in zip(model.metrics_names, val_results))))
     logging.info("Running on test set with {} redundancy...".format(test_loader.copy_count))
 
-    results = []
-    i = 0
-    for image_name, image_data in test_loader:
-        i += 1
-        if i % 100 == 0:
-            logging.info("Predicting {}...".format(image_name))
-        result = model.predict_on_batch(image_data)
-        prediction = np.mean(result, axis=0)
-        top = get_top_k(prediction)
-        results.append((image_name, top))
+    results = model.predict_generator(
+        generator=create_generator(test_loader, test_loader.copy_count),
+        steps=test_loader.size
+    )
 
-    results.sort()
+    filenames = test_loader.filenames()
+
+    predictions = []
+    for i in range(0, test_loader.size*test_loader.copy_count, test_loader.copy_count):
+        cc = test_loader.copy_count
+        prediction = np.mean(results[i:i+cc], axis=0)
+        top = get_top_k(prediction)
+        image_name = filenames[i/test_loader.copy_count]
+        predictions.append((image_name, top))
+
+    predictions.sort()
 
     logging.info("Creating {}...".format(args.output))
     with open(args.output, 'w') as f:
-        for filename, topk in results:
+        for filename, topk in predictions:
             f.write("{} {}\n".format(filename, ' '.join(str(i) for i in topk)))
 
 

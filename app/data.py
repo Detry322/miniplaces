@@ -147,12 +147,9 @@ class TestDataLoader(object):
         self.copy_count = kwargs['copy_count']
         self._idx = 0
 
-    def __iter__(self):
-        return self
-
-    def next(self):
+    def next_batch(self, *args):
         if self._idx == self.size():
-            raise StopIteration()
+            self._idx = 0
 
         images_batch = np.zeros((self.copy_count, self.fine_size, self.fine_size, 3))
         for i in range(self.copy_count):
@@ -170,6 +167,9 @@ class TestDataLoader(object):
         image_name = self.images[self._idx].replace(self.path, self.data_folder)
         self._idx += 1
         return image_name, images_batch
+
+    def filenames(self):
+        return map(lambda f: f.replace(self.path, self.data_folder), self.images)
 
     def size(self):
         return len(self.images)
