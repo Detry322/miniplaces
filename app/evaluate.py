@@ -13,7 +13,7 @@ DATA_TEST_CONFIG = {
   'load_size': 256,
   'fine_size': 224,
   'data_mean': np.asarray([0.45834960097,0.44674252445,0.41352266842]),
-  'copy_count': 5
+  'copy_count': 1
 }
 
 DATA_VAL_CONFIG = {
@@ -72,6 +72,6 @@ def evaluate_model(args):
     logging.info("Creating {}...".format(args.output))
     with open(args.output, 'w') as f:
         for filename, topk in results:
-            f.write("{} {}\n".format(filename, ' '.join(topk)))
+            f.write("{} {}\n".format(filename, ' '.join(str(i) for i in topk)))
 
 
