@@ -29,13 +29,14 @@ def create_model(input_size, weights=True, summary=True):
     model = Model(input=res_in, output=x)    
     weights = True
     if weights:
-        model.load_weights('/home/nick/miniplaces/models/resnet50_dropout_sgd.h5')
+        model.load_weights('/home/nick/miniplaces/models/resnet50_dropout_rmsprop_cont.h5')
     return model
 
 def compile_model(model):
     # sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
-    rmspop = RMSprop(lr=0.00001, rho=0.9, epsilon=1e-08, decay=0.0)
-    model.compile(optimizer=rmspop, loss='categorical_crossentropy', \
+      sgd = SGD(lr=0.0001, decay=1e-6, momentum=0.9, nesterov=True)
+    # rmspop = RMSprop(lr=0.00001, rho=0.9, epsilon=1e-08, decay=0.0)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy', \
                   metrics=['categorical_accuracy', 'top_k_categorical_accuracy'])
 
 def load_model(model_filename):
