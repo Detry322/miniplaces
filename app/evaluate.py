@@ -59,7 +59,7 @@ def evaluate_model(args):
     logging.info("Running on test set...")
 
     results = model.predict_generator(
-        generator=create_generator(test_loader, test_loader.batch_size),
+        generator=create_generator(test_loader, args.batch_size),
         steps=(test_loader.size() / args.batch_size),
         verbose=1
     )
