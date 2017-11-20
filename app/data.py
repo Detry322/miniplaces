@@ -167,7 +167,7 @@ class TestDataLoader(object):
             offset_w = np.random.random_integers(0, self.load_size-self.fine_size)
             images_batch[i, ...] =  image[offset_h:offset_h+self.fine_size, offset_w:offset_w+self.fine_size, :]
 
-        image_name = self.images[self.__idx].replace(self.path, self.data_folder)
+        image_name = self.images[self._idx].replace(self.path, self.data_folder)
         self._idx += 1
         return image_name, images_batch
 
