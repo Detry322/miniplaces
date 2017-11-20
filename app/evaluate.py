@@ -56,7 +56,7 @@ def evaluate_model(args):
     )
 
     logging.info("Validation results -- {}".format(', '.join('{}: {}'.format(name, result) for name, result in zip(model.metrics_names, val_results))))
-    logging.info("Running on test set with {} redundancy...".format(test_loader.copy_count))
+    logging.info("Running on test set...")
 
     results = model.predict_generator(
         generator=create_generator(test_loader, test_loader.batch_size),
@@ -68,10 +68,9 @@ def evaluate_model(args):
 
     predictions = []
     for i in range(test_loader.size()):
-        cc = test_loader.copy_count
         prediction = results[i]
         top = get_top_k(prediction)
-        image_name = filenames[i/test_loader.copy_count]
+        image_name = filenames[i]
         predictions.append((image_name, top))
 
     predictions.sort()
