@@ -7,31 +7,34 @@ from keras.callbacks import ModelCheckpoint
 
 from app.data import DataLoaderDisk
 
-DATA_TRAIN_CONFIG = {
-  'data_root': 'data/images/',
-  'data_list': 'data/train.txt',
-  'load_size': 256,
-  'fine_size': 224,
-  'num_categories': 100,
-  'data_mean': np.asarray([0.45834960097,0.44674252445,0.41352266842]),
-  'randomize': True
-}
+def get_config(args):
+    DATA_TRAIN_CONFIG = {
+      'data_root': 'data/images/',
+      'data_list': 'data/train.txt',
+      'load_size': args.full_size,
+      'fine_size': args.crop_size,
+      'num_categories': 100,
+      'data_mean': np.asarray([0.45834960097,0.44674252445,0.41352266842]),
+      'randomize': True
+    }
 
-DATA_VAL_CONFIG = {
-  'data_root': 'data/images/',
-  'data_list': 'data/val.txt',
-  'load_size': 256,
-  'fine_size': 224,
-  'num_categories': 100,
-  'data_mean': np.asarray([0.45834960097,0.44674252445,0.41352266842]),
-  'randomize': False
-}
+    DATA_VAL_CONFIG = {
+      'data_root': 'data/images/',
+      'data_list': 'data/val.txt',
+      'load_size': args.full_size,
+      'fine_size': args.crop_size,
+      'num_categories': 100,
+      'data_mean': np.asarray([0.45834960097,0.44674252445,0.41352266842]),
+      'randomize': False
+    }
+    return DATA_TRAIN_CONFIG, DATA_VAL_CONFIG
 
 def create_generator(loader, batch_size):
     while True:
         yield loader.next_batch(batch_size)
 
 def train_model(args):
+    DATA_TRAIN_CONFIG, DATA_VAL_CONFIG = get_config(args)
     model_type = args.model_type
     model_file = args.model_file
 
@@ -52,7 +55,7 @@ def train_model(args):
         model = model_module.load_model(model_file)
     else:
         logging.info("Creating new {} model...".format(model_type))
-        model = model_module.create_model()
+        model = model_module.create_model(input_size=(args.crop_size, args.crop_size, 3))
         model_module.compile_model(model)
 
     logging.info("Training {} model...".format(model_type))

@@ -1,4 +1,4 @@
-from app.models import INPUT_SHAPE, NUM_CLASSES
+from app.models import NUM_CLASSES
 from keras.layers.convolutional import (Convolution2D, MaxPooling2D,
                                         ZeroPadding2D)
 from keras.layers.core import Activation, Dense, Dropout, Flatten
@@ -8,13 +8,13 @@ from keras.optimizers import SGD, Adam
 from keras.models import load_model as keras_load_model
 from keras.applications.resnet50 import ResNet50
 
-def create_model(weights=False, summary=True):
+def create_model(input_size, weights=False, summary=True):
 
-    shape, classes = INPUT_SHAPE, NUM_CLASSES
+    shape, classes = input_size, NUM_CLASSES
 
     res_conv = ResNet50(include_top=False, 
                    weights=None,
-                   # input_shape=shape,   
+                   input_shape=shape,   
                    pooling='max', 
                    classes=100)
     # res_conv.layers.pop() # Get rid of the classification layer

@@ -1,4 +1,4 @@
-from app.models import INPUT_SHAPE, NUM_CLASSES
+from app.models import NUM_CLASSES
 from keras.layers.convolutional import (Convolution2D, MaxPooling2D,
                                         ZeroPadding2D)
 from keras.layers.core import Activation, Dense, Dropout, Flatten
@@ -10,10 +10,10 @@ from keras.models import load_model as keras_load_model
 
 # _VGG_19_WEIGHTS_URL = 'http://files.heuritech.com/weights/vgg19_weights.h5'
 
-def create_model(weights=False, summary=True):
+def create_model(input_size, weights=False, summary=True):
 
     # vgg19_model = Sequential()
-    input_ = Input(shape=INPUT_SHAPE)
+    input_ = Input(shape=input_size)
     x = input_
 
     # x =ZeroPadding2D((1, 1),input_shape=(3, 224, 224)))

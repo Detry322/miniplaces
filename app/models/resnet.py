@@ -1,4 +1,4 @@
-from app.models import INPUT_SHAPE, NUM_CLASSES
+from app.models import NUM_CLASSES
 from keras.layers.convolutional import (Convolution2D, MaxPooling2D,
                                         ZeroPadding2D)
 from keras.layers.core import Activation, Dense, Dropout, Flatten
@@ -11,9 +11,9 @@ from keras.applications.resnet50 import ResNet50
 
 # _VGG_19_WEIGHTS_URL = 'http://files.heuritech.com/weights/vgg19_weights.h5'
 
-def create_model(weights=False, summary=True):
+def create_model(input_size, weights=False, summary=True):
 
-    shape, classes = INPUT_SHAPE, NUM_CLASSES
+    shape, classes = input_size, NUM_CLASSES
     x = Input(shape)
     model = ResNet50(include_top=True, 
                    weights=None, 

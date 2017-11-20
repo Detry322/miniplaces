@@ -1,4 +1,4 @@
-from app.models import INPUT_SHAPE, NUM_CLASSES
+from app.models import NUM_CLASSES
 
 from keras.models import Model
 from keras.models import load_model as keras_load_model
@@ -13,8 +13,8 @@ from keras.optimizers import SGD
 # To create a new model, create a new file in the app/models directory with the name you want to call it.
 # Make sure it has these three methods
 
-def create_model():
-    input_ = Input(shape=INPUT_SHAPE)
+def create_model(input_size):
+    input_ = Input(shape=input_size)
 
     x = input_
     # Block 1
