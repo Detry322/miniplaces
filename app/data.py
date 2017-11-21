@@ -5,6 +5,7 @@ import imageio
 import h5py
 import logging
 import glob
+import scipy.ndimage
 
 # loading data from .h5
 class DataLoaderH5(object):
@@ -108,6 +109,9 @@ class DataLoaderDisk(object):
             image = image - self.data_mean
             if self.randomize:
                 flip = np.random.random_integers(0, 1)
+                blur = np.random.randint(0,9)
+                if blur <= 1:
+                    image = scipy.ndimage.filters.gaussian_filter(image, sigma=3, mode='reflect')
                 if flip>0:
                     image = image[:,::-1,:]
                 offset_h = np.random.random_integers(0, self.load_size-self.fine_size)
