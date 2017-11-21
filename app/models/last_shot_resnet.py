@@ -42,7 +42,7 @@ def create_model(input_size, weights=False, summary=True):
     x = AveragePooling2D((7, 7), name='avg_pool')(x)
     x = GlobalMaxPooling2D()(x)
 
-    x = Dense(500, activation='relu', name='fc3')(x)
+    x = Dense(500, activation='relu', name='fc2')(x)
     x = Dropout(0.25)(x)
     x = Dense(500, activation='relu', name='fc3')(x)
     x = Dropout(0.25)(x)
