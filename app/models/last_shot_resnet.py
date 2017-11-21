@@ -49,7 +49,7 @@ def create_model(input_size, weights=False, summary=True):
     x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
 
     model = Model(input=res_in, output=x)    
-    model.load_weights('models/resnet50_dropout_sgd_cont_declrd.h5', by_name=True)
+    model.load_weights('models/resnet50_dropout_2fc_5.h5', by_name=True)
     return model
 
 def compile_model(model):
