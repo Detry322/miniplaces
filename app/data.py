@@ -6,6 +6,7 @@ import h5py
 import logging
 import glob
 import scipy.ndimage
+from imgaug import augmenters as iaa
 
 # loading data from .h5
 class DataLoaderH5(object):
@@ -117,7 +118,7 @@ class DataLoaderDisk(object):
                     angle = np.random.randint(1,10)
                     sh = iaa.Affine(shear=(-angle, angle))
                     image = sh.augment_image(image)
-                if addGaussNoize <= 2:
+                if addGaussNoize <= 1:
                     s = np.random.randint(1,11)
                     agn = iaa.AdditiveGaussianNoise(scale=0.01*(s)*255)
                     image = agn.augment_image(image)
