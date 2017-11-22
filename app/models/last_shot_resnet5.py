@@ -49,14 +49,14 @@ def create_model(input_size, weights=False, summary=True):
     x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
 
     model = Model(input=res_in, output=x)    
-    model.load_weights('models/resnet50_dropout_2fc5.h5', by_name=True)
+    model.load_weights('models/last_shot_resnet4.h5', by_name=True)
     return model
 
 def compile_model(model):
-    # sgd = SGD(lr=0.0001, decay=1e-6, momentum=0.9, nesterov=True)
+    sgd = SGD(lr=0.000003, decay=1e-8, momentum=0.5, nesterov=True)
     # sgd = SGD(lr=5e-7, decay=5e-8, momentum=0.5, nesterov=False)
-    rmsprop = RMSprop(lr=0.00001, rho=0.9, epsilon=1e-08, decay=1e-7)
-    model.compile(optimizer=rmsprop, loss='categorical_crossentropy', \
+    # rmsprop = RMSprop(lr=0.000005, rho=0.9, epsilon=1e-08, decay=1e-8)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy', \
                   metrics=['categorical_accuracy', 'top_k_categorical_accuracy'])
 
 def load_model(model_filename):

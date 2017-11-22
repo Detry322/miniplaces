@@ -1,4 +1,4 @@
-from app.models import NUM_CLASSES
+from app.models import INPUT_SHAPE, NUM_CLASSES
 from keras.layers.convolutional import (Convolution2D, MaxPooling2D,
                                         ZeroPadding2D)
 from keras.layers.core import Activation, Dense, Dropout, Flatten
@@ -9,9 +9,9 @@ from keras.optimizers import SGD, Adam, RMSprop
 from keras.models import load_model as keras_load_model
 from keras.applications.resnet50 import ResNet50
 
-def create_model(input_size, weights=False, summary=True):
+def create_model(weights=True, summary=True):
 
-    shape, classes = input_size, NUM_CLASSES
+    shape, classes = INPUT_SHAPE, NUM_CLASSES
     res_conv = ResNet50(include_top=False, 
                    weights=None,
                    pooling='max', 
@@ -22,20 +22,18 @@ def create_model(input_size, weights=False, summary=True):
     res_out = res_conv(res_in)
 
     x = Dense(500, activation='relu', name='fc2')(res_out)
-    x = Dropout(0.4)(x)
-    x = Dense(500, activation='relu', name='fc3')(x)
-    x = Dropout(0.4)(x)
+    x = Dropout(0.5)(x)
     x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
 
     model = Model(input=res_in, output=x)    
     weights = True
     if weights:
-        model.load_weights('/home/nick/miniplaces/models/resnet50_dropout_sgd_cont_declrd5_decdo0.h5', by_name=True)
+        model.load_weights('/home/nick/miniplaces/models/resnet50_dropout_rmsprop_cont.h5')
     return model
 
 def compile_model(model):
-    sgd = SGD(lr=0.001, decay=1e-6, momentum=0.5, nesterov=True)
-    # sgd = SGD(lr=5e-7, decay=5e-8, momentum=0.5, nesterov=False)
+    # sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
+    sgd = SGD(lr=5e-5, decay=5e-7, momentum=0.5, nesterov=False)
     # rmspop = RMSprop(lr=0.00001, rho=0.9, epsilon=1e-08, decay=0.0)
     model.compile(optimizer=sgd, loss='categorical_crossentropy', \
                   metrics=['categorical_accuracy', 'top_k_categorical_accuracy'])

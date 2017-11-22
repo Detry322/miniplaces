@@ -111,7 +111,6 @@ class DataLoaderDisk(object):
             if self.randomize:
                 flip = np.random.random_integers(0, 2)
                 blur = np.random.randint(0,10)
-                sig = np.random.randint(1,4)
                 addGaussNoize = np.random.randint(0,10)
                 shear = np.random.randint(0,10)
                 if addGaussNoize <= 1:
@@ -119,7 +118,9 @@ class DataLoaderDisk(object):
                     agn = iaa.AdditiveGaussianNoise(scale=0.01*(s))
                     image = agn.augment_image(image)
                 if blur <= 1:
-                    image = scipy.ndimage.filters.gaussian_filter(image, sigma=sig, mode='reflect')
+                    sig = np.random.randint(1,4)
+                    gb = iaa.GaussianBlur(sigma=(0.0, sig))
+                    image = gb.augment_image(image)
                 if shear <= 1:
                     angle = np.random.randint(1,10)
                     sh = iaa.Affine(shear=(-angle, angle))
